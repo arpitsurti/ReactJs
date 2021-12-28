@@ -48,45 +48,67 @@ import './index.css';
 // }
 
 //Using class component
-class Employee extends React.Component{
-    constructor (props)
-    {
-        super(props);
-        console.log(props);
+// class Employee extends React.Component{
+//     constructor (props)
+//     {
+//         super(props);
+//         console.log(props);
+//     }
+
+//     render()
+//     {
+//         return <div>
+//          <p>
+//              <label><b>Id: </b> {this.props.id}</label>
+//          </p>
+//          <p>
+//              <label><b>First Name: </b> {this.props.fName}</label>
+//              </p>
+//          <p>
+//              <label><b>Last Name: </b> {this.props.lName}</label>
+//          </p>
+//          <p>
+//              <label><b>Location: </b> {this.props.location}</label>
+//          </p>
+//          <Department deptName={this.props.deptName} headName={this.props.headName}></Department>
+//      </div>;
+//     }
+// }
+// class Department extends React.Component{
+//     render()
+//     {
+//         return <div>
+//          <p>
+//              <label><b>Dept Name: </b> {this.props.deptName}</label>
+//              </p>
+//          <p>
+//              <label><b>Head Name: </b> {this.props.headName}</label>
+//          </p>
+//      </div>;
+//     }
+// }
+// const element = <Employee id="1" fName="John" lName="Doe" location="USA"
+// deptName="I.T" headName="head1"></Employee>
+// ReactDOM.render(element,document.getElementById("root"));
+
+//USING STATE IN REACT
+class Employee extends React.Component
+{
+    state = {
+        counter:0
+    };
+    addEmployee=()=>{
+        this.setState({counter:this.state.counter+1});
     }
 
     render()
     {
         return <div>
-         <p>
-             <label><b>Id: </b> {this.props.id}</label>
-         </p>
-         <p>
-             <label><b>First Name: </b> {this.props.fName}</label>
-             </p>
-         <p>
-             <label><b>Last Name: </b> {this.props.lName}</label>
-         </p>
-         <p>
-             <label><b>Location: </b> {this.propsthis.props.location}</label>
-         </p>
-         <Department deptName={this.props.deptName} headName={this.props.headName}></Department>
-     </div>;
+            <h1>Welcome to the employee component</h1>
+            <p><button onClick={this.addEmployee}>Increment employee count</button></p>
+            <p><label>Total count {this.state.counter}</label></p>
+        </div>
     }
 }
-class Department extends React.Component{
-    render()
-    {
-        return <div>
-         <p>
-             <label><b>Dept Name: </b> {this.props.deptName}</label>
-             </p>
-         <p>
-             <label><b>Head Name: </b> {this.props.headName}</label>
-         </p>
-     </div>;
-    }
-}
-const element = <Employee id="1" fName="John" lName="Doe" location="USA"
-deptName="I.T" headName="head1"></Employee>
+const element = <Employee></Employee>
 ReactDOM.render(element,document.getElementById("root"));

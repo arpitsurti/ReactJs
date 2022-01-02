@@ -114,7 +114,7 @@ import './index.css';
 // ReactDOM.render(element,document.getElementById("root"));
 
 //7. INTERACTION BETWEEN THE COMPONENTS
-class Employee extends React.Component
+/*class Employee extends React.Component
 {
     constructor(props)
     {
@@ -144,10 +144,10 @@ class Employee extends React.Component
             </p>
             <p>
               <label><b>Location: </b> {this.props.location}</label>
-            </p> 
+            </p>
             <p>
               <label><b>Salary: </b> {this.props.Salary}</label>
-            </p> 
+            </p>
             <p>
               <label><b>Updated Salary: </b> {this.state.updatedSalary}</label>
             </p>
@@ -190,7 +190,7 @@ class Salary extends React.Component
             </p>
             <p>
               <label><b>Special Allowance: </b><input type="text" ref={this.saRef}  defaultValue={this.state.sa}></input></label>
-            </p> 
+            </p>
             <button onClick={this.UpdateSalary}>Update</button>
         </div>;
     }
@@ -200,3 +200,205 @@ const element = <Employee id="1" fName="John" lName="Doe" location="USA"
  ></Employee>
 
  ReactDOM.render(element,document.getElementById("root"));
+ */
+
+ //8. REACT CONTEXT COMMUNICATION
+//  const EmployeeContext = React.createContext();
+
+//  class App extends React.Component
+//  {
+//      constructor(props)
+//      {
+//         super(props);
+//         this.state = {
+//             Id : 100,
+//             Name : 'Arpit',
+//         };
+//      }
+
+//      render()
+//      {
+//          return <div>
+//              <h1>Welcome to App component</h1>
+//              <p>
+//                  Employee Id: {this.state.Id}
+//              </p>
+//              <EmployeeContext.Provider value={this.state}>
+//                 <Employee></Employee>
+//              </EmployeeContext.Provider>
+//          </div>
+//      }
+//  }
+
+//  class Employee extends React.Component
+//  {
+//      static context = EmployeeContext;
+//      render()
+//      {
+//          return <div>
+//              <h1>Welcome to Employee component</h1>
+//              <p>
+//                  Employee Id: {this.context.Id}
+//              </p>
+//              <Salary></Salary>
+//              </div>
+//      }
+//  }
+
+//  class Salary extends React.Component
+//  {
+//     static context = EmployeeContext;
+
+//      render()
+//      {
+//          return <div><h1>Welcome to Salary component</h1>
+//          <p>
+//                  Employee Id: {this.context.Id}
+//              </p></div>
+//      }
+//  }
+//  const element = <App></App>
+//  ReactDOM.render(element,document.getElementById("root"));
+
+/* ITERATION THROUGH LIST IN REACT*/
+/*
+var Employees = [
+    {
+        id:1,name: "Emp1", designation:"Software Developer"
+    },
+    {
+        id:2,name: "Emp2", designation:"Software Tester"
+    },
+    {
+        id:3,name: "Emp3", designation:"Software Engineer"
+    }];
+
+function Employee(props)
+{
+    return <div style={{border:"2px solid blue"}}>
+        <p>
+            <label>Emp ID: <b>{props.data.id}</b></label>
+        </p>
+        <p>
+            <label>Emp Name: <b>{props.data.name}</b></label>
+        </p>
+        <p>
+            <label>Designation: <b>{props.data.designation}</b></label>
+        </p>
+    </div>
+}
+
+function DisplayEmployee(props)
+{
+    const empList = props.employeeList;
+    const listElement = empList.map((emp=>
+        <Employee key={emp.id} data={emp}></Employee>));
+    return (
+        <div>{listElement}</div>
+    );
+}
+const element = <DisplayEmployee employeeList={Employees}></DisplayEmployee>
+ReactDOM.render(element,document.getElementById("root"));
+*/
+
+/*GET DATA IN REACT USING WEB API*/
+/*
+class EmployeeComponent extends React.Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            employees:[]
+        };
+    }
+
+    //componentDidMount is component life cycle event
+    componentDidMount()
+    {
+        fetch("https://localhost:44318/api/employee").then(res=>res.json()).
+        then(result=>this.setState({employees:result}));
+    }
+
+    render()
+    {
+        return(
+            <div>
+                <h1>Employee Details using API</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.employees.map(emp => (
+                            <tr key={emp.id}>
+                                <td>{emp.id}</td>
+                                <td>{emp.name}</td>
+                                <td>{emp.designation}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+}
+const element = <EmployeeComponent></EmployeeComponent>;
+ReactDOM.render(element,document.getElementById("root"));
+*/
+class EmployeeComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          message: ''
+        };
+        
+    }
+    
+    onCreateEmployee=()=>{
+        let empInfo={
+              IdRef:React.createRef(),
+              NameRef:React.createRef(),
+              DesignationRef:React.createRef()
+            };
+            this.state = {
+                id : parseInt(this.IdRef.current.value),
+                name : this.NameRef.current.value,
+                designation : this.DesignationRef.current.value
+            }
+            fetch("https://localhost:44318/api/employee",{
+            method:'POST',
+            headers:{'Content-type':'application/json'},
+            body:JSON.stringify(empInfo)
+        }).then(r=>r.json()).then(res=>
+            {
+                if(res){
+                    this.setState({
+                        message:'New Emplyee created'
+                    });
+                }
+            })
+        }
+
+    render(){
+        return(
+            <div>
+                <h2>Please Enter Employee Details...</h2>
+                <p>
+                <label>Employee ID : <input type="text" ref="id"></input></label>
+                </p>
+                <p>
+                <label>Employee Name : <input type="text" ref="name"></input></label>
+                </p>
+                <p>
+                <label>Employee Designation : <input type="text" ref="designation"></input></label>
+                </p>
+                <button onClick={this.onCreateEmployee}>Create</button>
+            </div>
+        )
+    }
+}
